@@ -83,9 +83,6 @@ $transactiontype = $result['trans_type'];
                                                         </div>
 
                                                         <div class="col-sm-6 align-self-center mt-3">
-                                                            <p class="inv-street-addr"><?= $page['website_address'] ?></p>
-                                                            <p class="inv-email-address"><?= $page['website_email'] ?></p>
-                                                            <p class="inv-email-address">+<?= $page['website_tel'] ?></p>
                                                         </div>
                                                         <div class="col-sm-6 align-self-center mt-3 text-sm-right">
                                                             <p class="inv-created-date"><span class="inv-title"> </p>

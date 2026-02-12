@@ -75,28 +75,15 @@ if (isset($_POST['newsletter'])) {
                 <div class="small-box bg-aqua">
                     <div class="inner">
                         <?php
-
-
-                        $sql = "SELECT SUM(savings_balance) FROM accounts";
+                        // Total Balance: fetch all accounts and sum balances in PHP
+                        $sql = "SELECT savings_balance, current_balance, business_balance FROM accounts";
                         $stmt = $conn->prepare($sql);
                         $stmt->execute();
-
-                        $total = $stmt->fetch(PDO::FETCH_NUM);
-
-                        $sum = ($total && isset($total[0])) ? ($total[0] ?? 0) : 0;
-
-
-                        $sql2 = "SELECT SUM(current_balance) FROM accounts";
-                        $stmt0 = $conn->prepare($sql2);
-                        $stmt0->execute();
-
-                        $totall = $stmt0->fetch(PDO::FETCH_NUM);
-
-                        $sum2 = ($totall && isset($totall[0])) ? ($totall[0] ?? 0) : 0;
-
-                        $TotalSum = $sum + $sum2;
-
-
+                        
+                        $TotalSum = 0;
+                        while ($acc = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            $TotalSum += floatval($acc['savings_balance'] ?? 0) + floatval($acc['current_balance'] ?? 0) + floatval($acc['business_balance'] ?? 0);
+                        }
                         ?>
                         <h4><?= $currency ?><?php echo number_format($TotalSum, 2, '.', ','); ?></h4>
 
@@ -134,12 +121,14 @@ if (isset($_POST['newsletter'])) {
                 <div class="small-box bg-green">
                     <div class="inner">
                         <?php
-                        $sql = "SELECT SUM(amount) FROM transactions WHERE trans_type='Wire transfer'";
+                        $sql = "SELECT amount FROM transactions WHERE trans_type='Wire transfer'";
                         $stmt = $conn->prepare($sql);
                         $stmt->execute();
 
-                        $total = $stmt->fetch(PDO::FETCH_NUM);
-                        $wire = ($total && isset($total[0])) ? ($total[0] ?? 0) : 0;
+                        $wire = 0;
+                        while ($trans = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            $wire += floatval($trans['amount']);
+                        }
                         ?>
                         <h4><?= $currency ?><?php echo number_format($wire, 2, '.', ','); ?></h4>
 
@@ -157,12 +146,14 @@ if (isset($_POST['newsletter'])) {
                 <div class="small-box bg-red">
                     <div class="inner">
                         <?php
-                        $sql = "SELECT SUM(amount) FROM transactions WHERE trans_type='Domestic transfer'";
+                        $sql = "SELECT amount FROM transactions WHERE trans_type='Domestic transfer'";
                         $stmt = $conn->prepare($sql);
                         $stmt->execute();
 
-                        $total = $stmt->fetch(PDO::FETCH_NUM);
-                        $dom = ($total && isset($total[0])) ? ($total[0] ?? 0) : 0;
+                        $dom = 0;
+                        while ($trans = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            $dom += floatval($trans['amount']);
+                        }
                         ?>
                         <h4><?= $currency ?><?php echo number_format($dom, 2, '.', ','); ?></h4>
 
@@ -185,13 +176,14 @@ if (isset($_POST['newsletter'])) {
                 <div class="small-box bg-red">
                     <div class="inner">
                         <?php
-                        $sql2 = "SELECT SUM(current_balance) FROM accounts";
+                        $sql2 = "SELECT current_balance FROM accounts";
                         $stmt0 = $conn->prepare($sql2);
                         $stmt0->execute();
 
-                        $totall = $stmt0->fetch(PDO::FETCH_NUM);
-
-                        $sum = ($totall && isset($totall[0])) ? ($totall[0] ?? 0) : 0;
+                        $sum = 0;
+                        while ($acc = $stmt0->fetch(PDO::FETCH_ASSOC)) {
+                            $sum += floatval($acc['current_balance'] ?? 0);
+                        }
 
                         ?>
                         <h4><?= $currency ?><?php echo number_format($sum, 2, '.', ','); ?></h4>
@@ -210,13 +202,14 @@ if (isset($_POST['newsletter'])) {
                 <div class="small-box bg-green">
                     <div class="inner">
                         <?php
-                        $sql2 = "SELECT SUM(savings_balance) FROM accounts";
+                        $sql2 = "SELECT savings_balance FROM accounts";
                         $stmt0 = $conn->prepare($sql2);
                         $stmt0->execute();
 
-                        $totall = $stmt0->fetch(PDO::FETCH_NUM);
-
-                        $sum2 = ($totall && isset($totall[0])) ? ($totall[0] ?? 0) : 0;
+                        $sum2 = 0;
+                        while ($acc = $stmt0->fetch(PDO::FETCH_ASSOC)) {
+                            $sum2 += floatval($acc['savings_balance'] ?? 0);
+                        }
 
 
                         ?>

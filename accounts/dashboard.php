@@ -355,7 +355,7 @@ unset($_SESSION['wire_transfer'], $_SESSION['dom_transfer']);
                     <div class="widget-content">
                         <div class="w-header">
                             <div class="w-info">
-                                <h6 class="value">Business Name</h6>
+                                <h6 class="value">Business Account</h6>
                             </div>
                         </div>
 

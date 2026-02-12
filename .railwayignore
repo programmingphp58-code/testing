@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.qodo/
+
+# Git
+.git/
+
+# Logs and temp files
+error_log
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# Test files
+test-*.php
+p/
+ss/
+
+# SQL dumps (keep schema files but ignore large dumps)
+SQL/*.sql
+
+# Large asset folders (if not needed)
+.well-known/

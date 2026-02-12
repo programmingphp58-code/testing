@@ -1,0 +1,34 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+# Only force HTTPS in production (not for localhost or .local domains)
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP_HOST} !^(localhost|.*\.local)$ [NC]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+ <IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)/$ $1 [R,L]
+  RewriteCond %{REQUEST_FILENAME}.php -f
+  RewriteRule (.*) $1.php [L]
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule (.*) $1.html [L]
+ </IfModule>
+
+<Files ~ "^\w+\.(gif|jpe?g|png)$">
+order deny,allow
+allow from all
+</Files>
+
+
+<IfModule mod_headers.c>
+  Header set Access-Control-Allow-Origin "*"
+</IfModule>
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php73” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php73 .php .php7 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit

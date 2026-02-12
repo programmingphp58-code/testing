@@ -1,0 +1,9 @@
+configuration/vendor/
+node_modules/
+assets/deposit/
+assets/user/
+assets/panel/
+*.log
+error_log
+.env
+.DS_Store

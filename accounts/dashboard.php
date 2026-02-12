@@ -109,14 +109,16 @@ unset($_SESSION['wire_transfer'], $_SESSION['dom_transfer']);
                                 </svg></span><br>
 
                             <?php
-                            $sql = "SELECT COALESCE(SUM(CAST(amount AS DECIMAL(20,2))), 0) FROM transactions WHERE transaction_type='credit' AND internetid=:internetid AND trans_status='completed'";
+                            $sql = "SELECT * FROM transactions WHERE transaction_type='credit' AND internetid=:internetid AND trans_status='completed'";
                             $stmt = $conn->prepare($sql);
                             $stmt->execute([
                                 'internetid' => $_SESSION['internetid']
                             ]);
 
-                            $total = $stmt->fetch(PDO::FETCH_NUM);
-                            $Inflow = $total[0] ?? 0;
+                            $Inflow = 0;
+                            while ($trans = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                $Inflow += floatval($trans['amount']);
+                            }
                             ?>
                             <span class="text-success"><?= $currency ?><?php echo number_format($Inflow, 2, '.', ','); ?></span>
 
@@ -128,14 +130,16 @@ unset($_SESSION['wire_transfer'], $_SESSION['dom_transfer']);
                                     <polyline points="18 15 12 9 6 15"></polyline>
                                 </svg></span><br>
                             <?php
-                            $sql = "SELECT COALESCE(SUM(CAST(amount AS DECIMAL(20,2))), 0) FROM transactions WHERE transaction_type='debit' AND internetid=:internetid AND trans_status='completed'";
+                            $sql = "SELECT * FROM transactions WHERE transaction_type='debit' AND internetid=:internetid AND trans_status='completed'";
                             $stmt = $conn->prepare($sql);
                             $stmt->execute([
                                 'internetid' => $_SESSION['internetid']
                             ]);
 
-                            $total = $stmt->fetch(PDO::FETCH_NUM);
-                            $Outflow = $total[0] ?? 0;
+                            $Outflow = 0;
+                            while ($trans = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                $Outflow += floatval($trans['amount']);
+                            }
                             ?>
                             <span class="text-danger">
     <?= $currency ?>
